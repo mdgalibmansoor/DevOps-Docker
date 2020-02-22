@@ -1,0 +1,56 @@
+https://stackoverflow.com/users/story/12943136
+
+Doing installation of Docker-Swarm using below steps:
+
+$ base=https://github.com/docker/machine/releases/download/v0.16.0 &&
+  mkdir -p "$HOME/bin" &&
+  curl -L $base/docker-machine-Windows-x86_64.exe > "$HOME/bin/docker-machine.exe" &&
+  chmod +x "$HOME/bin/docker-machine.exe"
+
+Steps with ERROR:
+$ base=https://github.com/docker/machine/releases/download/v0.16.0
+$ mkdir -p "$HOME/bin"
+$ curl -L $base/docker-machine-Windows-x86_64.exe > "$HOME/bin/docker-machine.exe"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   623  100   623    0     0   1236      0 --:--:-- --:--:-- --:--:--  1238
+100 27.2M  100 27.2M    0     0   726k      0  0:00:38  0:00:38 --:--:--  593k
+
+$ chmod +x "$HOME/bin/docker-machine.exe"
+$ docker-machine version
+docker-machine.exe version 0.16.0, build 702c****
+$ docker-machine ls
+NAME   ACTIVE   DRIVER   STATE   URL   SWARM   DOCKER   ERRORS
+
+$ docker-machine create --driver virtualbox manager1
+Creating CA: C:\Users\*****\.docker\machine\certs\ca.pem
+Creating client certificate: C:\Users\*****\.docker\machine\certs\cert.pem
+Running pre-create checks...
+Error with pre-create check: "VBoxManage not found. Make sure VirtualBox is installed and VBoxManage is in the path"
+
+Resolution:
+
+Then I installed VM from below link:Install VirtualBox
+Download VirtualBox and the corresponding Extension Pack: https://www.virtualbox.org/wiki/Downloads
+Install VirtualBox with the default settings
+Add the Extension Pack to VirtualBox (File -> Preferences -> Extensions)
+
+$ docker-machine create --driver virtualbox manager1
+Running pre-create checks...
+Error with pre-create check: "This computer is running Hyper-V. VirtualBox won't boot a 64bits VM when Hyper-V is activated. 
+Either use Hyper-V as a driver, or disable the Hyper-V hypervisor. (To skip this check, use --virtualbox-no-vtx-check)"
+
+Then finally its created with below command:
+
+$ docker-machine create --driver virtualbox  --virtualbox-no-vtx-check manager1
+Running pre-create checks...
+(manager1) Image cache directory does not exist, creating it at C:\Users\****\.docker\machine\cache...
+(manager1) No default Boot2Docker ISO found locally, downloading the latest release...
+(manager1) 0%....10%....20%....30%....40%....50%....60%....70%....80%....90%....100%
+
+(manager1) Creating VirtualBox VM...
+(manager1) Creating SSH key...
+(manager1) Starting the VM...
+
+
+-------------------------Bon Voyage---------------------------------
